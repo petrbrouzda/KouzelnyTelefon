@@ -361,7 +361,7 @@ void onRequestNastaveni(AsyncWebServerRequest *request){
   AsyncResponseStream *response = request->beginResponseStream(webserver.HTML_UTF8);
   response->print( htmlHlavicka );
   response->print( htmlNastaveni1 );
-  response->printf( "Délka telefonního čísla:<br> <input type=\"number\" name=\"delka\" min=\"1\" max=\"5\" value=\"%d\"><br>",
+  response->printf( "Délka telefonního čísla:<br> <input type=\"number\" name=\"delka\" min=\"1\" max=\"15\" value=\"%d\"><br>",
       numberLen );
   response->printf( "Počet telefonních čísel:<br> <input type=\"number\" name=\"pocet\" min=\"1\" max=\"20\" value=\"%d\"><br>",
       items ); 
