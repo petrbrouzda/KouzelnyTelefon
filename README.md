@@ -1,6 +1,6 @@
 # KouzelnyTelefon
 
-Oživení klasického mechanického telefonu pomocí ESP32 a MP3 playeru.
+Oživení klasického mechanického telefonu s rotačním číselníkem pomocí ESP32 a MP3 playeru.
 
 ![](/doc/fotka1.jpg) 
 
