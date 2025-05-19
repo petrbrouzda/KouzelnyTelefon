@@ -53,6 +53,7 @@ Konfigurace desky:
 Knihovny:
 * MP3 přehrávač: https://github.com/DFRobot/DFRobotDFPlayerMini
 * Web server: https://github.com/ESP32Async/ESPAsyncWebServer a  https://github.com/ESP32Async/AsyncTCP 
+* Tasker: https://github.com/joysfera/arduino-tasker
 
 Detailní výpis z kompilace:
 ```
