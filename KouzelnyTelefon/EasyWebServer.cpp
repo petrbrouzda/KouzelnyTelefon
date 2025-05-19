@@ -64,7 +64,7 @@ void EasyWebServer::processDNS()
     }
 }
 
-const char *EasyWebServer::getQueryParamAsString(AsyncWebServerRequest *request, char *paramName, char *defaultValue)
+const char *EasyWebServer::getQueryParamAsString(AsyncWebServerRequest *request, const char *paramName, const char *defaultValue)
 {
     if(request->hasParam(paramName) ) { 
         return request->getParam(paramName)->value().c_str();
@@ -73,7 +73,7 @@ const char *EasyWebServer::getQueryParamAsString(AsyncWebServerRequest *request,
     }
 }
 
-long EasyWebServer::getQueryParamAsLong(AsyncWebServerRequest *request, char *paramName, long defaultValue)
+long EasyWebServer::getQueryParamAsLong(AsyncWebServerRequest *request, const char *paramName, long defaultValue)
 {
     if(request->hasParam(paramName) ) { 
         return atol( request->getParam(paramName)->value().c_str() );

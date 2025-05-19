@@ -34,6 +34,8 @@ class AppState
         //---- per-app funkcionalita
         char posledniVytoceneCislo[100];
         long casPoslednihoVytoceni;
+
+        double accuVoltage;
 };
 
 #endif

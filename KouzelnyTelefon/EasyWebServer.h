@@ -42,8 +42,8 @@ class EasyWebServer
          */
         void processDNS();
 
-        const char * getQueryParamAsString( AsyncWebServerRequest *request, char * paramName, char * defaultValue );
-        long getQueryParamAsLong( AsyncWebServerRequest *request, char * paramName, long defaultValue );
+        const char * getQueryParamAsString( AsyncWebServerRequest *request, const char * paramName, const char * defaultValue );
+        long getQueryParamAsLong( AsyncWebServerRequest *request, const char * paramName, long defaultValue );
 
         const char* HTML_UTF8 = "text/html; charset=utf-8";
 

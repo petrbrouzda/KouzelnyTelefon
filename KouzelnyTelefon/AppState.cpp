@@ -14,6 +14,7 @@ AppState::AppState()
     // --- per-app ----
     this->posledniVytoceneCislo[0] = 0;
     this->casPoslednihoVytoceni = 0;
+    this->accuVoltage = -1.0;
 }
 
 void AppState::setProblem(ProblemLevel state, const char *text)

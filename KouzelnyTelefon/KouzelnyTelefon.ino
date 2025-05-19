@@ -1,9 +1,5 @@
 // FQBN: esp32:esp32:esp32c3:CDCOnBoot=cdc,CPUFreq=80,FlashFreq=40,FlashMode=dio
 
-/*
-TODO:
-- detekce napětí akumulátoru + vypsat ve webu + ukončit práci na konci baterky
-*/
 
 
 // zapojeni desky
@@ -50,6 +46,7 @@ Mp3Player player( &serialLogger, &appState );
 #define VYTACECI_TON 1
 #define VYZVANECI_TON 2
 #define CISLO_NEEXISTUJE 3
+#define SLABA_BATERIE 4
 
 HardwareSerial hwSerial_1(1);
 
@@ -77,6 +74,25 @@ ConfigProviderSpiffs configProvider( &serialLogger, &config, &appState);
 bool saveConfigChange=false;
 
 
+/*
+Pro mereni kapacity baterky - kalibrace ADC mereni.
+https://github.com/madhephaestus/ESP32AnalogRead 
+*/
+#include <ESP32AnalogRead.h>
+ESP32AnalogRead adc;
+
+/*
+Periodicke ulohy
+https://github.com/joysfera/arduino-tasker
+*/
+#include <Tasker.h>
+Tasker tasker;
+
+
+
+#include "src/toolkit/map_double.h"
+
+
 //----- callback detektoru vytaceni
 
 // je volano kazdou ms z Tickeru
@@ -85,6 +101,29 @@ void detektorCallback()
   detektor.process();
 }
 
+
+int pocetMereni = 0;
+
+// mereni baterky
+void zmerAccu() {
+  double vin = adc.readVoltage();
+  double vreal = vin / (DELIC_R2/(DELIC_R1+DELIC_R2)) / KALIBRACE;
+  if( appState.accuVoltage < 0 ) {
+    // prvni mereni = rovnou nastavime
+    appState.accuVoltage = vreal;
+  } 
+  // plovouci exponencialni prumer
+  if( pocetMereni<10 ) {
+    // prvnich nekolik mereni je potreba projet rychle
+    appState.accuVoltage = 0.5 * appState.accuVoltage + 0.5 * vreal;
+    tasker.setTimeout( zmerAccu, 1000 );
+    pocetMereni++;
+  } else {
+    appState.accuVoltage = 0.8 * appState.accuVoltage + 0.2 * vreal;
+    tasker.setTimeout( zmerAccu, 10000 );
+  }
+  Serial.printf( "u=%.2f V (%.2f V)\n", appState.accuVoltage, vreal );
+}
 
 
 
@@ -109,6 +148,9 @@ void setup() {
   player.setVolume( VOLUME );
 
   webserver.startApAndWebserver();
+
+  adc.attach( ACCU );
+  tasker.setTimeout( zmerAccu, 1 );
 
   digitalWrite( LED, HIGH );
 }
@@ -175,8 +217,15 @@ void zpracujUdalostiTelefonu()
   if( udalost==CEKAM_NA_VYTOCENI ) {
     Serial.printf( "** UDALOST: Zvednute sluchatko, cekam na vytoceni.\n");
     digitalWrite( LED, LOW );
-    // prehravat vytaceci ton
-    player.playFile( MP3_SLOZKA_TELEFONU, VYTACECI_TON, OPAKOVAT_NEUSTALE );
+    if( appState.accuVoltage < LOW_BATTERY_LIMIT ) {
+      // pokud je slaba baterie, prehrat nejprve informaci
+      player.playFile( MP3_SLOZKA_TELEFONU, SLABA_BATERIE, 1 );  
+      // a pak vytaceci ton
+      player.setNextFile( MP3_SLOZKA_TELEFONU, VYTACECI_TON, OPAKOVAT_NEUSTALE );
+    } else {
+      // prehravat vytaceci ton
+      player.playFile( MP3_SLOZKA_TELEFONU, VYTACECI_TON, OPAKOVAT_NEUSTALE );
+    }
   }
   
   if( udalost==UZIVATEL_VYTACI ) {
@@ -237,6 +286,9 @@ void loop() {
 
   // vypiseme asynchronni log, pokud v nem neco je
   asyncLogger.dumpTo( &Serial );
+
+  // aby Tasker spoustel ulohy
+  tasker.loop();
 
   // udalosti z MP3 prehravace
   player.process();
@@ -309,6 +361,13 @@ void vlozInformace( AsyncResponseStream *response )  {
     response->printf( "<p>Poslední vytočené číslo: <b>%s</b> před %d sec.</p>",
       appState.posledniVytoceneCislo,
       (millis()-appState.casPoslednihoVytoceni) / 1000L
+    );
+  }
+
+  if( appState.accuVoltage > 0 ) {
+    response->printf( "<p>Akumulátor: <b>%.0f %%</b> (%.2f V)</p>",
+      map_double( appState.accuVoltage, 3.3, 4.2, 0, 100 ),
+      appState.accuVoltage
     );
   }
 }
@@ -455,6 +514,8 @@ Using library WiFi at version 2.0.0 in folder: C:\Users\brouzda\AppData\Local\Ar
 Using library Async TCP at version 3.4.0 in folder: E:\dev.moje\arduino\libraries\Async_TCP 
 Using library ESP Async WebServer at version 3.7.7 in folder: E:\dev.moje\arduino\libraries\ESP_Async_WebServer 
 Using library FS at version 2.0.0 in folder: C:\Users\brouzda\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.17\libraries\FS 
+Using library ESP32AnalogRead at version 0.3.0 in folder: E:\dev.moje\arduino\libraries\ESP32AnalogRead 
+Using library Tasker at version 2.0.3 in folder: E:\dev.moje\arduino\libraries\Tasker 
 Using library SPIFFS at version 2.0.0 in folder: C:\Users\brouzda\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.17\libraries\SPIFFS 
 
  */
