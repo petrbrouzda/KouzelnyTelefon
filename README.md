@@ -24,8 +24,8 @@ Aby spolehlivě fungovalo připojení na webserver, doporučuju:
 
 Doporučuji SD kartu naformátovat na FAT32.
 
-Na SD kartě musí být adresář 07 se soubory 001.mp3 až 003.mp3 (viz [adresář sdcard](/sdcard) ).
-A pak tam jsou potřeba nějaké další adresáře pojmenované 01-99 se soubory 001.mp3-999.mp3, které se budou přehrávat dle telefonních čísel (mapování se nastaví přes webserver).
+Na SD kartě musí být adresář 07 se soubory 001.mp3 až 004.mp3 (viz [adresář sdcard](/sdcard) ).
+A pak tam jsou potřeba nějaké další adresáře pojmenované 01-99 se soubory 001.mp3-999.mp3, které se budou přehrávat dle telefonních čísel - mapování se nastaví přes webserver.
 
 Pokud karta nefunguje, je třeba zkontrolovat, že je formátovaná v MBR rezimu (s GPT partition table to nefunguje) - zmíněno zde 
 https://forum.digikey.com/t/dfplayer-mini-communication-issue/18159/24 a popis, jak to rozlišit, je zde: https://www.tenforums.com/tutorials/84888-check-if-disk-mbr-gpt-windows.html
@@ -64,6 +64,8 @@ Using library WiFi at version 2.0.0 in folder: C:\Users\brouzda\AppData\Local\Ar
 Using library Async TCP at version 3.4.0 in folder: E:\dev.moje\arduino\libraries\Async_TCP 
 Using library ESP Async WebServer at version 3.7.7 in folder: E:\dev.moje\arduino\libraries\ESP_Async_WebServer 
 Using library FS at version 2.0.0 in folder: C:\Users\brouzda\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.17\libraries\FS 
+Using library ESP32AnalogRead at version 0.3.0 in folder: E:\dev.moje\arduino\libraries\ESP32AnalogRead 
+Using library Tasker at version 2.0.3 in folder: E:\dev.moje\arduino\libraries\Tasker 
 Using library SPIFFS at version 2.0.0 in folder: C:\Users\brouzda\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.17\libraries\SPIFFS 
 ```
 
