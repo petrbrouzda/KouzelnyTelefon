@@ -13,7 +13,8 @@ Konfiguraci správných čísel a kontrolu stavu zařízení lze dělat přes we
 * Wifi AP: Olsanska2681
 * heslo: Hoffmann2
 
-Webový server pak běží na http://192.168.1.1/ , ale WiFi by si mělo samo otevřít prohlížeč po připojení (captive portál).
+Webový server pak běží na http://192.168.1.1/ , ale WiFi by si mělo samo otevřít prohlížeč po připojení - jako captive portál ("Přihlašte se do sítě WiFi").
+Konfigurace wifi a IP adres je v souboru [EasyWebServer_config.h](/KouzelnyTelefon/EasyWebServer_config.h).
 
 Aby spolehlivě fungovalo připojení na webserver, doporučuju:
 * na mobilce vypnout data,
@@ -24,7 +25,7 @@ Aby spolehlivě fungovalo připojení na webserver, doporučuju:
 
 Doporučuji SD kartu naformátovat na FAT32.
 
-Na SD kartě musí být adresář 07 se soubory 001.mp3 až 004.mp3 (viz [adresář sdcard](/sdcard) ).
+Na SD kartě musí být adresář 07 se soubory 001.mp3, 003.mp3, 004.mp3 a 006.mp3 až 008.mp3 (viz [adresář sdcard](/sdcard) ).
 A pak tam jsou potřeba nějaké další adresáře pojmenované 01-99 se soubory 001.mp3-999.mp3, které se budou přehrávat dle telefonních čísel - mapování se nastaví přes webserver.
 
 Pokud karta nefunguje, je třeba zkontrolovat, že je formátovaná v MBR rezimu (s GPT partition table to nefunguje) - zmíněno zde 

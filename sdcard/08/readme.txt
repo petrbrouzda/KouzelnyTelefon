@@ -1,0 +1,1 @@
+ukazkova nahravka
