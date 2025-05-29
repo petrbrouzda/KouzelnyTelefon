@@ -44,9 +44,10 @@ Mp3Player player( &serialLogger, &appState );
 
 #define MP3_SLOZKA_TELEFONU 7
 #define VYTACECI_TON 1
-#define VYZVANECI_TON 2
 #define CISLO_NEEXISTUJE 3
 #define SLABA_BATERIE 4
+/** pouzije se tohle cislo a dve dalsi - nahodne */
+#define VYZVANECI_TON 6
 
 HardwareSerial hwSerial_1(1);
 
@@ -243,7 +244,9 @@ void zpracujUdalostiTelefonu()
 
     PlayerCommand * cmd = najdiTelefonniCislo( detektor.vytoceneCislo() );
     if( cmd != NULL ) {
-      player.playFile( MP3_SLOZKA_TELEFONU, VYZVANECI_TON, 1 );
+      randomSeed( millis() );
+      long randNum = random( 3 );
+      player.playFile( MP3_SLOZKA_TELEFONU, VYZVANECI_TON + randNum, 1 );
       player.setNextFile( cmd->folder, cmd->file, 1 );
     } else {
       player.playFile( MP3_SLOZKA_TELEFONU, CISLO_NEEXISTUJE, 3 );
@@ -517,5 +520,4 @@ Using library FS at version 2.0.0 in folder: C:\Users\brouzda\AppData\Local\Ardu
 Using library ESP32AnalogRead at version 0.3.0 in folder: E:\dev.moje\arduino\libraries\ESP32AnalogRead 
 Using library Tasker at version 2.0.3 in folder: E:\dev.moje\arduino\libraries\Tasker 
 Using library SPIFFS at version 2.0.0 in folder: C:\Users\brouzda\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.17\libraries\SPIFFS 
-
  */
