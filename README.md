@@ -2,7 +2,7 @@
 
 Oživení klasického mechanického telefonu s rotačním číselníkem pomocí ESP32 a MP3 playeru.
 
-![](/doc/fotka1.jpg) 
+![](/doc/osazeni.jpg) 
 
 Po zvednutí sluchátka se ozve vytáčecí tón,
 po vytočení čísla to nejdříve zvoní, a pak to přehraje nahrávku (pro různá čísla různé nahrávky).
